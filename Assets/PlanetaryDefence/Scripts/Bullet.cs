@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
 		Destroy(gameObject, 2.0f);
 	}
 
-	void OnTriggerEnter2D (Collider2D col)
+	void OnCollisionEnter (Collision col)
 	{
 		//If the bullet hits an enemy.
 		if(col.gameObject.tag == "Enemy")

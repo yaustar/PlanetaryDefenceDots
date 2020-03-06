@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlanetShield : MonoBehaviour 
 {
-	public SpriteRenderer sr;
+	//public SpriteRenderer sr;
 
-	void OnTriggerEnter2D (Collider2D col)
+	void OnTriggerEnter (Collider col)
 	{
 		if(col.gameObject.tag == "Enemy")
 		{
 			col.GetComponent<Enemy>().Die();
-			Game.g.SpriteFlash(sr);
+			//Game.g.SpriteFlash(sr);
 		}
 	}
 }

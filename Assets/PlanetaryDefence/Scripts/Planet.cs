@@ -10,7 +10,7 @@ public class Planet : MonoBehaviour
 	public GameObject deathParticleEffect;
 
 	//Components
-	public SpriteRenderer sr;
+	//public SpriteRenderer sr;
 
 	public static Planet p;
 
@@ -32,7 +32,7 @@ public class Planet : MonoBehaviour
 			health -= dmg;
 
 		CameraController.c.Shake(0.3f, 0.5f, 50.0f);
-		Game.g.SpriteFlash(sr);
+		//Game.g.SpriteFlash(sr);
 		UI.ui.SetPlanetHealthBarValue(health);
 	}
 }

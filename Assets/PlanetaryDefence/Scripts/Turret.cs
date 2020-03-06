@@ -62,6 +62,6 @@ public class Turret : MonoBehaviour
 		dir.x += offset.x;
 		dir.y += offset.y;
 
-		bullet.GetComponent<Rigidbody2D>().velocity = dir;
+		bullet.GetComponent<Rigidbody>().velocity = dir;
 	}
 }

@@ -65,7 +65,7 @@ public class Rocket : MonoBehaviour
 		dir.x += offset.x;
 		dir.y += offset.y;
 
-		bullet.GetComponent<Rigidbody2D>().velocity = dir;
+		bullet.GetComponent<Rigidbody>().velocity = dir;
 
 		if(canHoldFire)
 		{
@@ -73,14 +73,14 @@ public class Rocket : MonoBehaviour
 			{
 				if(x != 0)
 				{
-					bullet = Instantiate(bulletPrefab, rocketSprite.transform.position, rocketSprite.rotation);
+					bullet = Instantiate(bulletPrefab, rocketSprite.transform.position, transform.rotation);
 
 					dir = rocketSprite.transform.position.normalized * (bulletSpeed * Random.Range(1.0f, 1.1f));
 					offset = bullet.transform.right * (x * 5 + Random.Range(-bulletSpread, bulletSpread));
 					dir.x += offset.x;
 					dir.y += offset.y;
 
-					bullet.GetComponent<Rigidbody2D>().velocity = dir;
+					bullet.GetComponent<Rigidbody>().velocity = dir;
 				}
 			}
 		}
