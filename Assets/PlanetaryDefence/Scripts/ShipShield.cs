@@ -15,6 +15,6 @@ public class ShipShield : MonoBehaviour
 	//Called when the shield gets hit with a bullet.
 	public void ShieldHit ()
 	{
-		Game.g.SpriteFlash(sr);
+		//Game.g.SpriteFlash(sr);
 	}
 }

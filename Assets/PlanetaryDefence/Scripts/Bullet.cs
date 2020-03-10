@@ -6,7 +6,9 @@ public class Bullet : MonoBehaviour
 {
 	public int damage; //Most of the time 1.
 	public GameObject hitParticleEffect;
-
+	
+	
+	
 	void Start ()
 	{
 		Destroy(gameObject, 2.0f);

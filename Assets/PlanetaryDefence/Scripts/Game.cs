@@ -72,15 +72,16 @@ public class Game : MonoBehaviour
 	//Flashes the sent sprite renderer white for 0.05 seconds.
 	IEnumerator sf (SpriteRenderer sr)
 	{
-		if(sr.color != Color.white)
-		{
-			Color defaultColour = sr.color;
-			sr.color = Color.white;
+		if (sr != null) {
+			if (sr.color != Color.white) {
+				Color defaultColour = sr.color;
+				sr.color = Color.white;
 
-			yield return new WaitForSeconds(0.05f);
+				yield return new WaitForSeconds(0.05f);
 
-			if(sr != null)
-				sr.color = defaultColour;
+				if (sr != null)
+					sr.color = defaultColour;
+			}
 		}
 	}
 

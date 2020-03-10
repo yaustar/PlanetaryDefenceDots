@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour
 			AudioManager.am.PlayEnemyHit();
 		}
 
-		Game.g.SpriteFlash(sr);
+		//Game.g.SpriteFlash(sr);
 	}
 
 	//Called when health reaches less than or equal to 0.

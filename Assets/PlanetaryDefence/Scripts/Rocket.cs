@@ -16,8 +16,6 @@ public class Rocket : MonoBehaviour
 	//Prefabs
 	public GameObject bulletPrefab;
 
-	//Components
-	public Animator anim;
 
 	public static Rocket r;
 
