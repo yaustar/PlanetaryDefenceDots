@@ -25,7 +25,7 @@ public class PickupSpawner : MonoBehaviour
 
 		if(timer >= pickupSpawnTime && Game.g.gameActive)
 		{
-			SpawnPickup();
+			//SpawnPickup();
 			timer = 0.0f;
 			pickupSpawnTime = Random.Range(pickupMinSpawnTime, pickupMaxSpawnTime);
 		}

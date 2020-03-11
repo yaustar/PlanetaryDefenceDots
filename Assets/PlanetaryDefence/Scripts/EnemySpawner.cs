@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour 
 {
@@ -8,7 +12,8 @@ public class EnemySpawner : MonoBehaviour
 	public GameObject redEnemyPrefab;
 	public GameObject yellowEnemyPrefab;
 	public GameObject blueEnemyPrefab;
-
+	public GameObject testCubePrefab;
+	
 	public Rect spawnBoundry; //The edges of which the enemies can spawn on.
 
 	public float redSpawnRate;
@@ -44,7 +49,7 @@ public class EnemySpawner : MonoBehaviour
 	//Called when an enemy needs to be spawned.
 	void SpawnEnemy ()
 	{
-		float spawnDirection = Random.Range(1, 5); //Left, Up, Right, Down.
+		int spawnDirection = Random.Range(1, 5); //Left, Up, Right, Down.
 		Vector3 spawnPos = Vector3.zero;
 
 		//Get spawn pos based of screen direction.
@@ -58,12 +63,16 @@ public class EnemySpawner : MonoBehaviour
 			spawnPos = new Vector3(Random.Range(spawnBoundry.xMin, spawnBoundry.xMax), spawnBoundry.yMin, 0);
 
 		//Spawn the enemy.
-		GameObject enemy = Instantiate(GetEnemyToSpawn(), spawnPos, Quaternion.identity, enemyParent.transform);
+		var enemyPrefab = GetEnemyToSpawn(); //, spawnPos, Quaternion.identity, enemyParent.transform);
+		var enemyEntity = Instantiate(enemyPrefab);
+
+		enemyEntity.transform.position = spawnPos;
 	}
 
 	//Returns an enemy to spawn based on the spawn rates.
-	GameObject GetEnemyToSpawn ()
-	{
+	GameObject GetEnemyToSpawn () {
+		return redEnemyPrefab;
+		
 		float total = redSpawnRate + yellowSpawnRate + blueSpawnRate;
 		float ranNum = Random.Range(0.0f, total);
 
@@ -72,11 +81,8 @@ public class EnemySpawner : MonoBehaviour
 
 		if(ranNum <= yellowSpawnRate + redSpawnRate)
 			return yellowEnemyPrefab;
-
-		if(ranNum <= total)
-			return blueEnemyPrefab;
-
-		return null;
+		
+		return blueEnemyPrefab;
 	}
 
 	//Updates the spawn rates of the enemies.

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour 
+public class Enemy : MonoBehaviour, IConvertGameObjectToEntity
 {
 	public int health;
 	public float moveSpeed;
@@ -101,6 +102,10 @@ public class Enemy : MonoBehaviour
 		GameObject e1 = Instantiate(duplicatePrefab, transform.position + (transform.up * -2), Quaternion.identity);
 		GameObject e2 = Instantiate(duplicatePrefab, transform.position + (transform.right * 2), Quaternion.identity);
 		GameObject e3 = Instantiate(duplicatePrefab, transform.position + (transform.right * -2), Quaternion.identity);
+	}
+	
+	
+	public void Convert(Entity entity, EntityManager manager, GameObjectConversionSystem conversionSystem) {
 	}
 }
 

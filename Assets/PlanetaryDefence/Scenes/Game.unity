@@ -827,6 +827,8 @@ MonoBehaviour:
     type: 3}
   blueEnemyPrefab: {fileID: 1804772063903716, guid: 16b9dada555f76245a7a2cb7444995a2,
     type: 3}
+  testCubePrefab: {fileID: 2240612734417680189, guid: 8bafd6a976de5c6499af0899090d42e2,
+    type: 3}
   spawnBoundry:
     serializedVersion: 2
     x: -35
