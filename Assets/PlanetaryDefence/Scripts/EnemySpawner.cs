@@ -63,10 +63,15 @@ public class EnemySpawner : MonoBehaviour
 			spawnPos = new Vector3(Random.Range(spawnBoundry.xMin, spawnBoundry.xMax), spawnBoundry.yMin, 0);
 
 		//Spawn the enemy.
-		var enemyPrefab = GetEnemyToSpawn(); //, spawnPos, Quaternion.identity, enemyParent.transform);
+		var enemyPrefab = GetEnemyToSpawn(); 
 		var enemyEntity = Instantiate(enemyPrefab);
 
 		enemyEntity.transform.position = spawnPos;
+		
+		// Look at 0, 0, 0 along the Y axis of the enemy ship
+		Vector3 direction = Vector3.zero - spawnPos;
+		Quaternion targetRotation = Quaternion.FromToRotation(enemyEntity.transform.up, direction);
+		enemyEntity.transform.rotation = targetRotation;
 	}
 
 	//Returns an enemy to spawn based on the spawn rates.
