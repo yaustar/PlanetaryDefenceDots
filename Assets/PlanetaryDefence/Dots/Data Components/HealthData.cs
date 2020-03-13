@@ -5,6 +5,6 @@ using UnityEngine;
 
 
 [GenerateAuthoringComponent]
-public struct  HealthData : IComponentData {
-    private float HealthLeft;
+public struct HealthData : IComponentData {
+    public int healthLeft;
 }

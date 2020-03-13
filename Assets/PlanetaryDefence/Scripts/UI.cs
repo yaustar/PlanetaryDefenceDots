@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,10 +21,19 @@ public class UI : MonoBehaviour
 
 	public static UI ui;
 
+
+	private EntityQuery _planetEntityQueryQuery;
+	private EntityManager _entityManager;
+
 	void Awake () { ui = this; }
 
 	void Start ()
 	{
+		_entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		_planetEntityQueryQuery = _entityManager.CreateEntityQuery(
+			ComponentType.ReadOnly<PlanetTag>(),
+			ComponentType.ReadOnly<HealthData>());
+
 		planetHealthBar.maxValue = Planet.p.health;
 		planetHealthBar.value = Planet.p.health;
 	}
@@ -31,6 +42,18 @@ public class UI : MonoBehaviour
 	{
 		if(Game.g.gameActive)
 		{
+			// Keep track of when the planet takes damage
+			var planetHealthDatas = _planetEntityQueryQuery.ToComponentDataArray<HealthData>(Allocator.TempJob);
+			if (planetHealthDatas.Length > 0) {
+				// Assume there is only one planet
+				var healthLeft = planetHealthDatas[0].healthLeft;
+				if (planetHealthBar.value != healthLeft) {
+					SetPlanetHealthBarValue(healthLeft);
+				}
+			}
+
+			planetHealthDatas.Dispose();
+			
 			SetTimeElapsed();
 		}
 	}

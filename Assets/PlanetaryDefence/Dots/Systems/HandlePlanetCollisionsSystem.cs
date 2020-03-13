@@ -7,6 +7,7 @@ using Unity.Physics;
 using Unity.Physics.Systems;
 using UnityEngine;
 
+
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class HandlePlanetCollisionsSystem : JobComponentSystem {
     
@@ -14,7 +15,7 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
 
         public EntityCommandBuffer commandBuffer;
 
-        public ComponentDataFromEntity<DamagableData> damagableEntities;
+        [ReadOnly] public ComponentDataFromEntity<DamagableData> damagableEntities;
         [ReadOnly] public ComponentDataFromEntity<PlanetTag> planetEntities;  
         
         
@@ -29,15 +30,22 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
             bool damagebleIsEntityB = damagableEntities.Exists(entityB);
 
             if (planetIsEntityA && damagebleIsEntityB) {
-                commandBuffer.DestroyEntity(entityB);
+                AddDamageToPlanet(entityA, entityB);
 
             } else if (planetIsEntityB && damagableIsEntityA) {
-                commandBuffer.DestroyEntity(entityA);
+                AddDamageToPlanet(entityB, entityA);
             }
         }
+
+
+        private void AddDamageToPlanet(Entity planetEntity, Entity damagableEntity) {
+            DamagableData damangableData = damagableEntities[damagableEntity];
+            commandBuffer.AddComponent(planetEntity, new PlanetDamageData {damage = damangableData.damage} );
+            commandBuffer.DestroyEntity(damagableEntity);
+        }
     }
-
-
+    
+    
     private BuildPhysicsWorld _buildPhysicsWorld;
     private StepPhysicsWorld _stepPhysicsWorld;
 
@@ -53,11 +61,10 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
 
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
-        
         TriggerJob triggerJob = new TriggerJob {
             commandBuffer = _ecb.CreateCommandBuffer(),
-            damagableEntities = GetComponentDataFromEntity<DamagableData>(),
-            planetEntities = GetComponentDataFromEntity<PlanetTag>()
+            damagableEntities = GetComponentDataFromEntity<DamagableData>(true),
+            planetEntities = GetComponentDataFromEntity<PlanetTag>(true)
         };
         
         

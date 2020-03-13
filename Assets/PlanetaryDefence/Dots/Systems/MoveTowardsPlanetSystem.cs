@@ -4,9 +4,9 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 [AlwaysSynchronizeSystem]
-public class MoveTowardsPlanetSystem : JobComponentSystem {
+public class MoveTowardsPlanetSystem : SystemBase {
 
-    	protected override JobHandle OnUpdate(JobHandle inputDeps) {
+    	protected override void OnUpdate() {
 
 	        float dt = Time.DeltaTime;
 	        
@@ -23,8 +23,7 @@ public class MoveTowardsPlanetSystem : JobComponentSystem {
 
 	                translation.Value = translation.Value + displacement;
 	            }).Run();
-    	    
-    		return default;
-    	}
+            
+        }
 }
 
