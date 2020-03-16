@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public struct DamagableData : IComponentData {
+public struct DamageDealerData : IComponentData {
     public int damage;
 }

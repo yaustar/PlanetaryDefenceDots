@@ -15,9 +15,10 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
 
         public EntityCommandBuffer commandBuffer;
 
-        [ReadOnly] public ComponentDataFromEntity<DamagableData> damagableEntities;
+        [ReadOnly] public ComponentDataFromEntity<DamageDealerData> damaeDealerEntities;
         [ReadOnly] public ComponentDataFromEntity<PlanetTag> planetEntities;  
         
+        public ComponentDataFromEntity<HealthData> healthEntities;  
         
         public void Execute(TriggerEvent triggerEvent) {
             Entity entityA = triggerEvent.Entities.EntityA;
@@ -26,8 +27,8 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
             bool planetIsEntityA = planetEntities.Exists(entityA);
             bool planetIsEntityB = planetEntities.Exists(entityB);
 
-            bool damagableIsEntityA = damagableEntities.Exists(entityA);
-            bool damagebleIsEntityB = damagableEntities.Exists(entityB);
+            bool damagableIsEntityA = damaeDealerEntities.Exists(entityA);
+            bool damagebleIsEntityB = damaeDealerEntities.Exists(entityB);
 
             if (planetIsEntityA && damagebleIsEntityB) {
                 AddDamageToPlanet(entityA, entityB);
@@ -38,10 +39,15 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
         }
 
 
-        private void AddDamageToPlanet(Entity planetEntity, Entity damagableEntity) {
-            DamagableData damangableData = damagableEntities[damagableEntity];
-            commandBuffer.AddComponent(planetEntity, new PlanetDamageData {damage = damangableData.damage} );
-            commandBuffer.DestroyEntity(damagableEntity);
+        private void AddDamageToPlanet(Entity planetEntity, Entity damageDealerEntity) {
+            DamageDealerData damageDealerData = damaeDealerEntities[damageDealerEntity];
+            HealthData damageDealerHealthData = healthEntities[damageDealerEntity];
+
+            // Destroy the thing that hit the planet
+            damageDealerHealthData.healthLeft = 0;
+            healthEntities[damageDealerEntity] = damageDealerHealthData;
+            
+            commandBuffer.AddComponent(planetEntity, new PlanetDamageData {damage = damageDealerData.damage} );
         }
     }
     
@@ -63,8 +69,9 @@ public class HandlePlanetCollisionsSystem : JobComponentSystem {
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
         TriggerJob triggerJob = new TriggerJob {
             commandBuffer = _ecb.CreateCommandBuffer(),
-            damagableEntities = GetComponentDataFromEntity<DamagableData>(true),
-            planetEntities = GetComponentDataFromEntity<PlanetTag>(true)
+            damaeDealerEntities = GetComponentDataFromEntity<DamageDealerData>(true),
+            planetEntities = GetComponentDataFromEntity<PlanetTag>(true),
+            healthEntities = GetComponentDataFromEntity<HealthData>()
         };
         
         
